@@ -43,6 +43,17 @@ server.get('/api/health', (req, res, next) => {
 // Get all players
 server.get('/api/players', async (req, res, next) => {
   const players = await connectRunClose('players', players => players.find({}).toArray())
+  players.sort((player1, player2) => {
+    const rank1 = player1.rank
+    const rank2 = player2.rank
+    if (rank1 < rank2) {
+      return -1
+    }
+    if (rank1 > rank2) {
+      return 1
+    }
+    return 0
+  })
   res.send(HttpStatus.OK, players)
   next()
 })
@@ -83,7 +94,6 @@ server.post('/api/players', async (req, res, next) => {
   }
 
   const playerId = shortid.generate()
-
   const players = await connectRunClose('players', players => players.find({}).toArray())
   const rank = players.length + 1
   const result = await connectRunClose('players', players => players.insertOne({ playerId, name, rank }))
