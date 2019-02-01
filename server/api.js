@@ -40,20 +40,22 @@ server.get('/api/health', (req, res, next) => {
   next()
 })
 
+const comparePlayerRanks = (player1, player2) => {
+  const rank1 = player1.rank
+  const rank2 = player2.rank
+  if (rank1 < rank2) {
+    return -1
+  }
+  if (rank1 > rank2) {
+    return 1
+  }
+  return 0
+}
+
 // Get all players
 server.get('/api/players', async (req, res, next) => {
   const players = await connectRunClose('players', players => players.find({}).toArray())
-  players.sort((player1, player2) => {
-    const rank1 = player1.rank
-    const rank2 = player2.rank
-    if (rank1 < rank2) {
-      return -1
-    }
-    if (rank1 > rank2) {
-      return 1
-    }
-    return 0
-  })
+  players.sort(comparePlayerRanks)
   res.send(HttpStatus.OK, players)
   next()
 })
@@ -116,10 +118,24 @@ server.post('/api/swap', async (req, res, next) => {
   next()
 })
 
+// Clean up ranks
+const cleanUpRanks = async () => {
+  const players = await connectRunClose('players', players => players.find({}).toArray())
+  players.sort(comparePlayerRanks)
+  for (let i = 0; i < players.length; i++) {
+    const player = players[i];
+    const { playerId } = player;
+    await connectRunClose('players', players => players.updateOne(
+      { playerId },
+      { $set: { rank: i + 1 } }))
+  }
+}
+
 // Delete specific player
 server.del('/api/players/:playerId', async (req, res, next) => {
   const { playerId } = req.params
   await connectRunClose('players', players => players.deleteOne({ playerId }))
+  await cleanUpRanks()
   res.send(HttpStatus.NO_CONTENT)
   next()
 })
