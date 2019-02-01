@@ -40,9 +40,12 @@ class App extends React.Component {
     this.props.createPlayer(name);
   }
 
-  handleDeleteButtonClick (playerId) {
+  handleDeleteButtonClick ({name, playerId}) {
     return () => {
-      this.props.deletePlayer(playerId);
+      const confirmed = window.confirm(`Delete ${name}?`);
+      if (confirmed) {
+        this.props.deletePlayer(playerId);
+      }
     };
   }
 
@@ -88,7 +91,7 @@ class App extends React.Component {
                   </button>&nbsp;
                   <button
                     className="btn btn-sm btn-outline-danger"
-                    onClick={this.handleDeleteButtonClick(player.playerId)}
+                    onClick={this.handleDeleteButtonClick(player)}
                   >
                     Delete
                   </button>
