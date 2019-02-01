@@ -20,9 +20,15 @@ class App extends React.Component {
 
     return (
       <Fragment>
-        {
-          this.props.players.map(player => <div>{player.name}</div>)
-        }
+        <ol>
+          {
+            this.props.players.map(player =>
+              <li>
+                {player.name}&nbsp;
+                <button className="btn btn-sm btn-outline-danger">Delete</button>
+              </li>)
+          }
+        </ol>
         <button
           type='button'
           className="btn btn-primary"

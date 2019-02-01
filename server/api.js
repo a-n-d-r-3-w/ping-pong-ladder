@@ -46,6 +46,7 @@ const getSortedPlayers = async () => {
 
 // Get all players
 server.get('/api/players', async (req, res, next) => {
+  await cleanUpRanks()
   const players = await getSortedPlayers()
   res.send(HttpStatus.OK, players)
   next()
@@ -67,6 +68,7 @@ server.post('/api/players', async (req, res, next) => {
   }
 
   const playerId = shortid.generate()
+  await cleanUpRanks()
   const players = await getSortedPlayers()
   const rank = players.length + 1
   const result = await connectRunClose('players', players => players.insertOne({ playerId, name, rank }))
