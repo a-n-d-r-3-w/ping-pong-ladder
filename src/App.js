@@ -21,10 +21,15 @@ class App extends React.Component {
 
   render() {
     const { createPlayer, isLoading, players } = this.props;
+
+    const title = <h1 style={{ margin: '1em 0', textAlign: 'center' }}>
+      Ping-Pong Ladder
+    </h1>;
+
     if (isLoading || !players) {
       return (
         <Fragment>
-          <h1>Ping-Pong Ladder</h1>
+          {title}
           <div>Loading...</div>
         </Fragment>
       );
@@ -32,7 +37,7 @@ class App extends React.Component {
 
     return (
       <Fragment>
-        <h1>Ping-Pong Ladder</h1>
+        {title}
         <ul className="list-group list-group-flush">
           {
             this.props.players.map(player =>
@@ -57,6 +62,7 @@ class App extends React.Component {
           type='button'
           className="btn btn-outline-secondary"
           onClick={createPlayer}
+          style={{marginTop: '1em'}}
         >
           Add player
         </button>
