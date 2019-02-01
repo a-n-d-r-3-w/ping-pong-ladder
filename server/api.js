@@ -106,6 +106,36 @@ server.post('/api/players', async (req, res, next) => {
   next()
 })
 
+// Swap ranks
+server.post('/api/swap', async (req, res, next) => {
+  if (!req.body) {
+    res.send(HttpStatus.BAD_REQUEST, 'Player IDs are missing.')
+    next()
+    return
+  }
+
+  const { player1Id, player2Id } = req.body
+  if (!player1Id || !player2Id) {
+    res.send(HttpStatus.BAD_REQUEST, 'Missing player IDs.')
+    next()
+    return
+  }
+
+  const player1 = await connectRunClose('players', players => players.findOne({ playerId: player1Id }))
+  const player2 = await connectRunClose('players', players => players.findOne({ playerId: player2Id }))
+  const player1Rank = player1.rank
+  const player2Rank = player2.rank
+
+  await connectRunClose('players', players => players.updateOne(
+    { playerId: player1Id },
+    { $set: { rank: player2Rank } }))
+  await connectRunClose('players', players => players.updateOne(
+    { playerId: player2Id },
+    { $set: { rank: player1Rank } }))
+  res.send(HttpStatus.NO_CONTENT)
+  next()
+})
+
 // Create account
 server.post('/accounts', async (req, res, next) => {
   const accountId = shortid.generate()
