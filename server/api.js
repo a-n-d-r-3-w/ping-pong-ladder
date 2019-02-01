@@ -24,24 +24,26 @@ server.use(cors.actual)
 /*
 Data types:
 
- - An account is an object like this:
+ - A player is an object like this:
    {
      _id: <MongoDB document ID>
-     accountId: 'IyNUaA1Ya',
-     peeps: <Array of peeps>
-   }
-
- - A peep is an object like this:
-   {
-     peepId: 'SPAUjEqrS',
-     info: <String with newlines: \n>
+     playerId: 'IyNUaA1Ya',
+     name: 'Lieutenant Data',
+     rank: 6
    }
 
 */
 
 // Health
-server.get('/health', (req, res, next) => {
+server.get('/api/health', (req, res, next) => {
   res.send(HttpStatus.OK, 'App is okay.')
+  next()
+})
+
+// Get all players
+server.get('/api/players', async (req, res, next) => {
+  const players = await connectRunClose('players', players => players.find({}).toArray())
+  res.send(HttpStatus.OK, players)
   next()
 })
 
@@ -62,6 +64,35 @@ server.get('/accounts/:accountId', async (req, res, next) => {
     return
   }
   res.send(HttpStatus.OK, account)
+  next()
+})
+
+// Create player
+server.post('/api/players', async (req, res, next) => {
+  if (!req.body) {
+    res.send(HttpStatus.BAD_REQUEST, 'Name is missing.')
+    next()
+    return
+  }
+
+  const { name } = req.body
+  if (name.trim().length === 0) {
+    res.send(HttpStatus.BAD_REQUEST, 'Name is empty.')
+    next()
+    return
+  }
+
+  const playerId = shortid.generate()
+
+  const players = await connectRunClose('players', players => players.find({}).toArray())
+  const rank = players.length + 1
+  const result = await connectRunClose('players', players => players.insertOne({ playerId, name, rank }))
+  if (result.result.ok === 1) {
+    res.send(HttpStatus.CREATED, { accountId: playerId })
+    next()
+    return
+  }
+  res.send(HttpStatus.INTERNAL_SERVER_ERROR)
   next()
 })
 
