@@ -71,7 +71,7 @@ server.post('/api/players', async (req, res, next) => {
   const rank = players.length + 1
   const result = await connectRunClose('players', players => players.insertOne({ playerId, name, rank }))
   if (result.result.ok === 1) {
-    res.send(HttpStatus.CREATED, { accountId: playerId })
+    res.send(HttpStatus.CREATED, { playerId })
     next()
     return
   }
