@@ -60,8 +60,8 @@ class App extends React.Component {
       const confirmed = window.confirm(`Swap ${player1.name} and ${player2.name}?`);
       if (confirmed) {
         this.props.swapRanks(player1.playerId, player2.playerId);
-        this.setState({ markedPlayer: null });
       }
+      this.setState({ markedPlayer: null });
     };
   }
 
@@ -104,27 +104,33 @@ class App extends React.Component {
             <th>Actions</th>
           </tr>
           {
-            this.props.players.map(player =>
-              <tr>
-                <td>{rankString(player.rank)}</td>
-                <td>{player.name}</td>
-                <td>
-                  <div className="btn-group" role="group">
-                    <button
-                      className="btn btn-sm btn-link"
-                      onClick={this.handleMarkButtonClick(player)}
-                    >
-                      Mark for swap
-                    </button>&nbsp;
-                    <button
-                      className="btn btn-sm btn-link text-secondary"
-                      onClick={this.handleDeleteButtonClick(player)}
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </td>
-              </tr>)
+            this.props.players.map(player => {
+              const isMarked = this.state.markedPlayer && (this.state.markedPlayer.playerId === player.playerId);
+              return (
+                <tr
+                  className={isMarked ? 'table-active' : ''}>
+                  <td>{rankString(player.rank)}</td>
+                  <td>{player.name}</td>
+                  <td>
+                    <div className="btn-group" role="group">
+                      <button
+                        className="btn btn-sm btn-link"
+                        onClick={this.handleMarkButtonClick(player)}
+                        disabled={isMarked}
+                      >
+                        Mark for swap
+                      </button>
+                      <button
+                        className="btn btn-sm btn-link text-secondary"
+                        onClick={this.handleDeleteButtonClick(player)}
+                        disabled={isMarked}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </td>
+                </tr>);
+            })
           }
         </table>
         <button
