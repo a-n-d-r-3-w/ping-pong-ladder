@@ -1,19 +1,16 @@
 import axios from "axios";
-import faker from "faker";
 
 export const SET_PLAYERS = 'SET_PLAYERS';
 export const SET_IS_LOADING = 'SET_IS_LOADING';
 export const SET_IS_SAVING = 'SET_IS_SAVING';
 
-export function createPlayer () {
+export function createPlayer (name) {
   return function (dispatch) {
     dispatch({
       type: SET_IS_LOADING,
       isLoading: true,
     });
-    axios.post('http://localhost:8000/api/players', {
-      name: faker.name.findName()
-    })
+    axios.post('http://localhost:8000/api/players', { name })
       .then(response => {
         dispatch({
           type: SET_IS_LOADING,

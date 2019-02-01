@@ -28,7 +28,16 @@ const rankString = number => {
 class App extends React.Component {
   constructor (props) {
     super(props);
+    this.handleAddButtonClick = this.handleAddButtonClick.bind(this);
     this.handleDeleteButtonClick = this.handleDeleteButtonClick.bind(this);
+  }
+
+  handleAddButtonClick () {
+    const name = window.prompt("Enter name:");
+    if (!name) {
+      return;
+    }
+    this.props.createPlayer(name);
   }
 
   handleDeleteButtonClick (playerId) {
@@ -42,7 +51,7 @@ class App extends React.Component {
   }
 
   render() {
-    const { createPlayer, isLoading, players } = this.props;
+    const { isLoading, players } = this.props;
 
     const title = <h1 style={{ margin: '1em 0', textAlign: 'center' }}>
       Ping-Pong Ladder
@@ -90,7 +99,7 @@ class App extends React.Component {
         <button
           type='button'
           className="btn btn-outline-secondary"
-          onClick={createPlayer}
+          onClick={this.handleAddButtonClick}
           style={{marginTop: '1em'}}
         >
           Add player
@@ -111,7 +120,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  createPlayer: () => dispatch(createPlayer()),
+  createPlayer: name => dispatch(createPlayer(name)),
   deletePlayer: playerId => dispatch(deletePlayer(playerId)),
   getPlayers: () => dispatch(getPlayers())
 });
