@@ -89,17 +89,19 @@ class App extends React.Component {
                 <td>{rankString(player.rank)}</td>
                 <td>{player.name}</td>
                 <td>
-                  <button
-                    className="btn btn-sm btn-outline-primary"
-                  >
-                    Swap
-                  </button>&nbsp;
-                  <button
-                    className="btn btn-sm btn-outline-danger"
-                    onClick={this.handleDeleteButtonClick(player)}
-                  >
-                    Delete
-                  </button>
+                  <div className="btn-group" role="group">
+                    <button
+                      className="btn btn-sm btn-link"
+                    >
+                      Mark for swap
+                    </button>&nbsp;
+                    <button
+                      className="btn btn-sm btn-link text-secondary"
+                      onClick={this.handleDeleteButtonClick(player)}
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </td>
               </tr>)
           }
