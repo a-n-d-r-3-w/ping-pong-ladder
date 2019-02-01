@@ -1,5 +1,4 @@
 import {
-  SET_PLAYER_ID,
   SET_PLAYERS,
   SET_IS_LOADING,
   SET_IS_SAVING
@@ -7,17 +6,11 @@ import {
 
 const reducers = (state = {}, action) => {
   switch (action.type) {
-    case SET_PLAYER_ID:
-      const { accountId } = action;
-      return {
-        ...state,
-        accountId,
-      };
     case SET_PLAYERS:
-      const { peeps } = action;
+      const { players } = action;
       return {
         ...state,
-        peeps,
+        players,
       };
     case SET_IS_LOADING:
       const { isLoading } = action;

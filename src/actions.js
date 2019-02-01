@@ -1,6 +1,5 @@
 import axios from "axios";
 
-export const SET_PLAYER_ID = 'SET_PLAYER_ID';
 export const SET_PLAYERS = 'SET_PLAYERS';
 export const SET_IS_LOADING = 'SET_IS_LOADING';
 export const SET_IS_SAVING = 'SET_IS_SAVING';

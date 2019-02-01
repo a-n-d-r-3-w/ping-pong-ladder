@@ -1,30 +1,38 @@
 import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {createPlayer} from './actions';
+import {createPlayer, getPlayers} from './actions';
 
-const App = ({ onClickCreatePlayer, isLoading }) => {
-  if (isLoading) {
+class App extends React.Component {
+  componentDidMount () {
+    this.props.getPlayers();
+  }
+
+  render() {
+    const { createPlayer, isLoading } = this.props;
+    if (isLoading) {
+      return (
+        <Fragment>
+          Loading...
+        </Fragment>
+      );
+    }
     return (
       <Fragment>
-        Loading...
-      </Fragment>
-    );
+        <button
+          type='button'
+          className="btn btn-primary"
+          onClick={createPlayer}
+        >
+          Create player
+        </button>
+      </Fragment>);
   }
-  return (
-    <Fragment>
-      <button
-        type='button'
-        className="btn btn-primary"
-        onClick={onClickCreatePlayer}
-      >
-        Create player
-      </button>
-    </Fragment>);
-};
+}
 
 App.propTypes = {
-  onClickCreatePlayer: PropTypes.func.isRequired,
+  createPlayer: PropTypes.func.isRequired,
+  getPlayers: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -32,7 +40,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  onClickCreatePlayer: () => dispatch(createPlayer())
+  createPlayer: () => dispatch(createPlayer()),
+  getPlayers: () => dispatch(getPlayers())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
