@@ -13,13 +13,15 @@ class App extends React.Component {
     if (isLoading || !players) {
       return (
         <Fragment>
-          Loading...
+          <h1>Ping-Pong Ladder</h1>
+          <div>Loading...</div>
         </Fragment>
       );
     }
 
     return (
       <Fragment>
+        <h1>Ping-Pong Ladder</h1>
         <ol>
           {
             this.props.players.map(player =>
@@ -31,10 +33,10 @@ class App extends React.Component {
         </ol>
         <button
           type='button'
-          className="btn btn-primary"
+          className="btn btn-outline-secondary"
           onClick={createPlayer}
         >
-          Create player
+          Add player
         </button>
       </Fragment>);
   }
