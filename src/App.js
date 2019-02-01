@@ -33,8 +33,12 @@ const rankString = number => {
 class App extends React.Component {
   constructor (props) {
     super(props);
+    this.state = {
+      markedPlayer: null,
+    }
     this.handleAddButtonClick = this.handleAddButtonClick.bind(this);
     this.handleDeleteButtonClick = this.handleDeleteButtonClick.bind(this);
+    this.handleMarkButtonClick = this.handleMarkButtonClick.bind(this);
   }
 
   handleAddButtonClick () {
@@ -43,6 +47,22 @@ class App extends React.Component {
       return;
     }
     this.props.createPlayer(name);
+  }
+
+  handleMarkButtonClick (player) {
+    return () => {
+      if (!this.state.markedPlayer) {
+        this.setState({ markedPlayer: player });
+        return;
+      }
+      const player1 = this.state.markedPlayer;
+      const player2 = player;
+      const confirmed = window.confirm(`Swap ${player1.name} and ${player2.name}?`);
+      if (confirmed) {
+        this.props.swapRanks(player1.playerId, player2.playerId);
+        this.setState({ markedPlayer: null });
+      }
+    };
   }
 
   handleDeleteButtonClick ({name, playerId}) {
@@ -92,6 +112,7 @@ class App extends React.Component {
                   <div className="btn-group" role="group">
                     <button
                       className="btn btn-sm btn-link"
+                      onClick={this.handleMarkButtonClick(player)}
                     >
                       Mark for swap
                     </button>&nbsp;
