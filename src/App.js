@@ -1,9 +1,20 @@
 import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {createPlayer, getPlayers} from './actions';
+import {createPlayer, getPlayers, deletePlayer} from './actions';
 
 class App extends React.Component {
+  constructor (props) {
+    super(props);
+    this.handleDeleteButtonClick = this.handleDeleteButtonClick.bind(this);
+  }
+
+  handleDeleteButtonClick (playerId) {
+    return () => {
+      this.props.deletePlayer(playerId);
+    };
+  }
+
   componentDidMount () {
     this.props.getPlayers();
   }
@@ -27,7 +38,12 @@ class App extends React.Component {
             this.props.players.map(player =>
               <li>
                 {player.name}&nbsp;
-                <button className="btn btn-sm btn-outline-danger">Delete</button>
+                <button
+                  className="btn btn-sm btn-outline-danger"
+                  onClick={this.handleDeleteButtonClick(player.playerId)}
+                >
+                  Delete
+                </button>
               </li>)
           }
         </ol>
@@ -44,6 +60,7 @@ class App extends React.Component {
 
 App.propTypes = {
   createPlayer: PropTypes.func.isRequired,
+  deletePlayer: PropTypes.func.isRequired,
   getPlayers: PropTypes.func.isRequired,
 };
 
@@ -54,6 +71,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   createPlayer: () => dispatch(createPlayer()),
+  deletePlayer: playerId => dispatch(deletePlayer(playerId)),
   getPlayers: () => dispatch(getPlayers())
 });
 
