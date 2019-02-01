@@ -1,7 +1,12 @@
 import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {createPlayer, getPlayers, deletePlayer} from './actions';
+import {
+  createPlayer,
+  getPlayers,
+  deletePlayer,
+  swapRanks,
+} from './actions';
 
 const rankString = number => {
   if (number === 1) {
@@ -115,6 +120,7 @@ App.propTypes = {
   createPlayer: PropTypes.func.isRequired,
   deletePlayer: PropTypes.func.isRequired,
   getPlayers: PropTypes.func.isRequired,
+  swapRanks: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -125,7 +131,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   createPlayer: name => dispatch(createPlayer(name)),
   deletePlayer: playerId => dispatch(deletePlayer(playerId)),
-  getPlayers: () => dispatch(getPlayers())
+  getPlayers: () => dispatch(getPlayers()),
+  swapRanks: (player1Id, player2Id) => dispatch(swapRanks(player1Id, player2Id))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

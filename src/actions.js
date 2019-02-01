@@ -11,7 +11,7 @@ export function createPlayer (name) {
       isLoading: true,
     });
     axios.post('http://localhost:8000/api/players', { name })
-      .then(response => {
+      .then(() => {
         dispatch({
           type: SET_IS_LOADING,
           isLoading: false,
@@ -53,6 +53,26 @@ export function deletePlayer (playerId) {
     axios.delete(`http://localhost:8000/api/players/${playerId}`)
       .then(() => {
         dispatch(getPlayers());
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }
+}
+
+export function swapRanks (player1Id, player2Id) {
+  return function (dispatch) {
+    dispatch({
+      type: SET_IS_LOADING,
+      isLoading: true,
+    });
+    axios.post('http://localhost:8000/api/swap', { player1Id, player2Id })
+      .then(() => {
+        dispatch({
+          type: SET_IS_LOADING,
+          isLoading: false,
+        });
+        dispatch(getPlayers())
       })
       .catch(error => {
         console.error(error);
