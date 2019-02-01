@@ -33,11 +33,17 @@ class App extends React.Component {
     return (
       <Fragment>
         <h1>Ping-Pong Ladder</h1>
-        <ol>
+        <ul className="list-group list-group-flush">
           {
             this.props.players.map(player =>
-              <li>
+              <li className="list-group-item">
+                {player.rank}.&nbsp;
                 {player.name}&nbsp;
+                <button
+                  className="btn btn-sm btn-outline-primary"
+                >
+                  Swap
+                </button>&nbsp;
                 <button
                   className="btn btn-sm btn-outline-danger"
                   onClick={this.handleDeleteButtonClick(player.playerId)}
@@ -46,7 +52,7 @@ class App extends React.Component {
                 </button>
               </li>)
           }
-        </ol>
+        </ul>
         <button
           type='button'
           className="btn btn-outline-secondary"
