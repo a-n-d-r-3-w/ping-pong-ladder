@@ -126,10 +126,10 @@ server.del('/accounts', async (req, res, next) => {
   next()
 })
 
-// Delete specific account
-server.del('/accounts/:accountId', async (req, res, next) => {
-  const { accountId } = req.params
-  await connectRunClose('accounts', accounts => accounts.deleteOne({ accountId }))
+// Delete specific player
+server.del('/players/:playerId', async (req, res, next) => {
+  const { playerId } = req.params
+  await connectRunClose('players', players => players.deleteOne({ playerId }))
   res.send(HttpStatus.NO_CONTENT)
   next()
 })
