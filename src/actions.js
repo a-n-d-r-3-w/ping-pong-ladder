@@ -1,4 +1,5 @@
 import axios from "axios";
+import faker from "faker";
 
 export const SET_PLAYERS = 'SET_PLAYERS';
 export const SET_IS_LOADING = 'SET_IS_LOADING';
@@ -11,13 +12,14 @@ export function createPlayer () {
       isLoading: true,
     });
     axios.post('http://localhost:8000/api/players', {
-      name: 'Lieutenant Data'
+      name: faker.name.findName()
     })
       .then(response => {
         dispatch({
           type: SET_IS_LOADING,
           isLoading: false,
         });
+        dispatch(getPlayers())
       })
       .catch(error => {
         console.error(error);

@@ -9,16 +9,20 @@ class App extends React.Component {
   }
 
   render() {
-    const { createPlayer, isLoading } = this.props;
-    if (isLoading) {
+    const { createPlayer, isLoading, players } = this.props;
+    if (isLoading || !players) {
       return (
         <Fragment>
           Loading...
         </Fragment>
       );
     }
+
     return (
       <Fragment>
+        {
+          this.props.players.map(player => <div>{player.name}</div>)
+        }
         <button
           type='button'
           className="btn btn-primary"
@@ -36,7 +40,8 @@ App.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  isLoading: state.isLoading
+  isLoading: state.isLoading,
+  players: state.players
 });
 
 const mapDispatchToProps = dispatch => ({
