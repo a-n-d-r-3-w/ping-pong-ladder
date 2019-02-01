@@ -40,22 +40,13 @@ server.get('/api/health', (req, res, next) => {
   next()
 })
 
-const comparePlayerRanks = (player1, player2) => {
-  const rank1 = player1.rank
-  const rank2 = player2.rank
-  if (rank1 < rank2) {
-    return -1
-  }
-  if (rank1 > rank2) {
-    return 1
-  }
-  return 0
+const getSortedPlayers = async () => {
+  return await connectRunClose('players', players => players.find({}, { sort:  [['rank', 1]] }).toArray())
 }
 
 // Get all players
 server.get('/api/players', async (req, res, next) => {
-  const players = await connectRunClose('players', players => players.find({}).toArray())
-  players.sort(comparePlayerRanks)
+  const players = await getSortedPlayers()
   res.send(HttpStatus.OK, players)
   next()
 })
@@ -76,7 +67,7 @@ server.post('/api/players', async (req, res, next) => {
   }
 
   const playerId = shortid.generate()
-  const players = await connectRunClose('players', players => players.find({}).toArray())
+  const players = await getSortedPlayers()
   const rank = players.length + 1
   const result = await connectRunClose('players', players => players.insertOne({ playerId, name, rank }))
   if (result.result.ok === 1) {
@@ -120,8 +111,7 @@ server.post('/api/swap', async (req, res, next) => {
 
 // Clean up ranks
 const cleanUpRanks = async () => {
-  const players = await connectRunClose('players', players => players.find({}).toArray())
-  players.sort(comparePlayerRanks)
+  const players = await getSortedPlayers()
   for (let i = 0; i < players.length; i++) {
     const player = players[i];
     const { playerId } = player;
