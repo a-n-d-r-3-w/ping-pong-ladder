@@ -7,6 +7,7 @@ import {
   deletePlayer,
   swapRanks,
 } from './actions';
+import diskun from './images/diskun.png'
 
 const rankString = number => {
   if (number === 1) {
@@ -80,10 +81,12 @@ class App extends React.Component {
 
   render() {
     const { isLoading, players } = this.props;
-
-    const title = <h1 style={{ margin: '1em 0', textAlign: 'center' }}>
-      Ping-Pong Ladder
-    </h1>;
+    const title = <div>
+      <h1 style={{ margin: '1em 0', textAlign: 'center' }}>
+        <img src={diskun} alt="diskun" />
+        Ping-Pong Ladder
+      </h1>
+    </div>;
 
     if (isLoading || !players) {
       return (
