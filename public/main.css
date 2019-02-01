@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'Arcade';
+    src: url('/fonts/ARCADE_I.WOFF') format('woff'),
+    url('/fonts/ARCADE_I.ttf')  format('truetype');
+}
+
+* {
+    font-family: 'Arcade', sans-serif;
+}
