@@ -140,7 +140,7 @@ class App extends React.Component {
           type='button'
           className="btn btn-outline-secondary"
           onClick={this.handleAddButtonClick}
-          style={{marginTop: '1em'}}
+          style={{margin: '1em 0 10em 0'}}
         >
           Add player
         </button>
