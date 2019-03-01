@@ -4,10 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npm run server:start & npm run client:start",
+    "start": "npm run client:build && npm run server:start & npm run client:start",
     "server:start": "node ./server/api.js",
     "server:start:dev": "nodemon ./server/api.js",
-    "client:start": "react-scripts start",
+    "client:start": "serve -s build",
+    "client:start:dev": "react-scripts start",
     "client:build": "react-scripts build",
     "client:test": "react-scripts test",
     "client:eject": "react-scripts eject"
@@ -35,6 +36,7 @@
     "redux-thunk": "2.3.0",
     "restify": "7.2.3",
     "restify-cors-middleware": "1.1.1",
+    "serve": "10.1.2",
     "shortid": "2.2.14"
   },
   "eslintConfig": {
