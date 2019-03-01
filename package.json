@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "npm run server:start & npm run client:start",
     "server:start": "node ./server/api.js",
     "server:start:dev": "nodemon ./server/api.js",
     "client:start": "react-scripts start",
