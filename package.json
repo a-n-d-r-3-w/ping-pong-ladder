@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node ./server/api.js",
+    "start": "npm run build && node ./server/api.js",
     "start:dev": "nodemon ./server/api.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
