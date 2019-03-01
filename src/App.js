@@ -86,6 +86,16 @@ class App extends React.Component {
         <img src={diskun} alt="diskun" />
         Ping-Pong Ladder
       </h1>
+      <ul>
+        <li>Any player can challenge a player <em>within 3 rungs above</em> them on the ladder.</li>
+        <li>These challenges generally should not or can not be declined.</li>
+        <li>If the lower-placed player wins the match, then the two players swap places on the ladder.</li>
+        <li>
+          If the lower-placed player loses, then they may not challenge the same person again without challenging
+          someone else first.
+        </li>
+        <li>Have fun!</li>
+      </ul>
     </div>;
 
     if (isLoading || !players) {
