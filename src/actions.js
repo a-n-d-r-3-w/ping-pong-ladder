@@ -10,7 +10,7 @@ export function createPlayer (name) {
       type: SET_IS_LOADING,
       isLoading: true,
     });
-    axios.post('http://localhost:8000/api/players', { name })
+    axios.post('/api/players', { name })
       .then(() => {
         dispatch({
           type: SET_IS_LOADING,
@@ -30,7 +30,7 @@ export function getPlayers () {
       type: SET_IS_LOADING,
       isLoading: true,
     });
-    axios.get(`http://localhost:8000/api/players`)
+    axios.get(`/api/players`)
       .then(response => {
         dispatch({
           type: SET_IS_LOADING,
@@ -50,7 +50,7 @@ export function getPlayers () {
 
 export function deletePlayer (playerId) {
   return function (dispatch) {
-    axios.delete(`http://localhost:8000/api/players/${playerId}`)
+    axios.delete(`/api/players/${playerId}`)
       .then(() => {
         dispatch(getPlayers());
       })
@@ -66,7 +66,7 @@ export function swapRanks (player1Id, player2Id) {
       type: SET_IS_LOADING,
       isLoading: true,
     });
-    axios.post('http://localhost:8000/api/swap', { player1Id, player2Id })
+    axios.post('/api/swap', { player1Id, player2Id })
       .then(() => {
         dispatch({
           type: SET_IS_LOADING,

@@ -132,6 +132,8 @@ server.del('/api/players/:playerId', async (req, res, next) => {
   next()
 })
 
+server.get('*', restify.plugins.serveStatic({ directory: 'build', default: 'index.html' }));
+
 let port = process.env.PORT
 if (port == null || port === '') {
   port = 8000
