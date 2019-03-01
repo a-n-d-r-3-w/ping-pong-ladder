@@ -4,15 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npm run client:build && npm run server:start & npm run client:start",
-    "start:dev": "npm run server:start & npm run client:start:dev",
-    "server:start": "node ./server/api.js",
-    "server:start:dev": "nodemon ./server/api.js",
-    "client:start": "serve -s build",
-    "client:start:dev": "react-scripts start",
-    "client:build": "react-scripts build",
-    "client:test": "react-scripts test",
-    "client:eject": "react-scripts eject"
+    "start": "node ./server/api.js",
+    "start:dev": "nodemon ./server/api.js",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
   "author": "",
   "license": "MIT",
