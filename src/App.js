@@ -59,6 +59,11 @@ const rankString = number => {
   return `${number}th`;
 }
 
+const timeString = timestamp => new Date(timestamp).toLocaleTimeString('en-US', {
+  weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+  hour: 'numeric', minute: 'numeric'
+})
+
 class App extends React.Component {
   constructor (props) {
     super(props);
@@ -115,7 +120,7 @@ class App extends React.Component {
   }
 
   render() {
-    const { isLoading, players } = this.props;
+    const { isLoading, players, swaps } = this.props;
     const { isRulesShowing } = this.state;
     const title = <div style={{ marginBottom: '2em' }}>
       <h1 style={{ margin: '1em 0', textAlign: 'center' }}>
@@ -155,6 +160,14 @@ class App extends React.Component {
     return (
       <Fragment>
         {title}
+        <table className="table">
+          { swaps.map(swap => (
+            <div style={{ margin: "1em 0" }}>
+              {timeString(swap.timestamp)}:<br />
+              {swap.winnerName} (#{swap.loserRank}) takes the #{swap.winnerRank} spot from {swap.loserName}!
+            </div>
+          )) }
+        </table>
         <table className="table">
           <tr>
             <th>Rank</th>
@@ -213,7 +226,8 @@ App.propTypes = {
 
 const mapStateToProps = state => ({
   isLoading: state.isLoading,
-  players: state.players
+  players: state.players,
+  swaps: state.swaps
 });
 
 const mapDispatchToProps = dispatch => ({

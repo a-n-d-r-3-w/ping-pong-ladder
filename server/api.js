@@ -127,14 +127,9 @@ server.post('/api/swap', async (req, res, next) => {
 
   // Record swap
   const timestamp = Date.now()
-  const timestampStr = new Date().toLocaleTimeString('en-US', {
-    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
-    hour: 'numeric', minute: 'numeric'
-  })
 
   await connectRunClose('swaps', swaps => swaps.insertOne({
     timestamp,
-    timestampStr,
     winnerName: winner.name,
     winnerRank: Math.min(player1.rank, player2.rank),
     loserName: loser.name,

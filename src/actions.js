@@ -98,6 +98,7 @@ export function swapRanks (player1Id, player2Id) {
           isLoading: false,
         });
         dispatch(getPlayers())
+        dispatch(getSwaps())
       })
       .catch(error => {
         console.error(error);
