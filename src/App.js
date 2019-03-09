@@ -60,8 +60,7 @@ const rankString = number => {
 }
 
 const timeString = timestamp => new Date(timestamp).toLocaleTimeString('en-US', {
-  weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
-  hour: 'numeric', minute: 'numeric'
+  weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'
 })
 
 class App extends React.Component {
