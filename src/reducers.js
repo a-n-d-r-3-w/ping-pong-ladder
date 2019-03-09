@@ -1,7 +1,8 @@
 import {
   SET_PLAYERS,
   SET_IS_LOADING,
-  SET_IS_SAVING
+  SET_IS_SAVING,
+  SET_SWAPS,
 } from './actions';
 
 const reducers = (state = {}, action) => {
@@ -11,6 +12,12 @@ const reducers = (state = {}, action) => {
       return {
         ...state,
         players,
+      };
+    case SET_SWAPS:
+      const { swaps } = action;
+      return {
+        ...state,
+        swaps,
       };
     case SET_IS_LOADING:
       const { isLoading } = action;

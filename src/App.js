@@ -6,6 +6,7 @@ import {
   getPlayers,
   deletePlayer,
   swapRanks,
+  getSwaps,
 } from './actions';
 import diskun from './images/diskun.png'
 
@@ -109,6 +110,7 @@ class App extends React.Component {
   }
 
   componentDidMount () {
+    this.props.getSwaps();
     this.props.getPlayers();
   }
 
@@ -206,6 +208,7 @@ App.propTypes = {
   deletePlayer: PropTypes.func.isRequired,
   getPlayers: PropTypes.func.isRequired,
   swapRanks: PropTypes.func.isRequired,
+  getSwaps: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -217,7 +220,8 @@ const mapDispatchToProps = dispatch => ({
   createPlayer: name => dispatch(createPlayer(name)),
   deletePlayer: playerId => dispatch(deletePlayer(playerId)),
   getPlayers: () => dispatch(getPlayers()),
-  swapRanks: (player1Id, player2Id) => dispatch(swapRanks(player1Id, player2Id))
+  swapRanks: (player1Id, player2Id) => dispatch(swapRanks(player1Id, player2Id)),
+  getSwaps: () => dispatch(getSwaps()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
