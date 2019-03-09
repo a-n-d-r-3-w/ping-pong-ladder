@@ -143,7 +143,7 @@ class App extends React.Component {
   render() {
     const { isLoading, players, swaps } = this.props;
     const { isRulesShowing } = this.state;
-    const title = <div style={{ marginBottom: '2em' }}>
+    const title = <div style={{ marginBottom: '1em' }}>
       <h1 style={{ margin: '1em 0', textAlign: 'center' }}>
         <img src={diskun} alt="diskun" />
         Ping-Pong Ladder
