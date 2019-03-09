@@ -63,6 +63,28 @@ const timeString = timestamp => new Date(timestamp).toLocaleTimeString('en-US', 
   weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'
 })
 
+const takesString = () => {
+  const synonyms = [
+    'takes',
+    'grabs',
+    'steals',
+    'seizes',
+    'plucks',
+    'snags',
+    'swipes',
+    'nabs',
+    'snatches',
+    'clinches',
+    'captures',
+    'earns',
+    'attains',
+    'acquires',
+    'secures',
+  ]
+  const randomIndex = Math.floor(Math.random() * synonyms.length)
+  return synonyms[randomIndex]
+}
+
 class App extends React.Component {
   constructor (props) {
     super(props);
@@ -163,7 +185,7 @@ class App extends React.Component {
           { swaps.map(swap => (
             <div style={{ margin: "1em 0" }}>
               {timeString(swap.timestamp)}:<br />
-              {swap.winnerName} (#{swap.loserRank}) takes the #{swap.winnerRank} spot from {swap.loserName}!
+              {swap.winnerName} (#{swap.loserRank}) {takesString()} the #{swap.winnerRank} spot from {swap.loserName}!
             </div>
           )) }
         </table>
