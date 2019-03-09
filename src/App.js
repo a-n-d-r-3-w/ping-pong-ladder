@@ -85,6 +85,10 @@ const takesString = () => {
   return synonyms[randomIndex]
 }
 
+const goToGithub = () => {
+   window.location.href = 'https://github.com/a-n-d-r-3-w/ping-pong-ladder'
+}
+
 class App extends React.Component {
   constructor (props) {
     super(props);
@@ -153,6 +157,13 @@ class App extends React.Component {
         onClick={this.handleToggleRulesButtonClick}
       >
         {isRulesShowing ? 'Hide' : 'Show'} rules
+      </button>
+      <button
+        className="btn btn-sm btn-link"
+        onClick={goToGithub}
+        style={{ marginLeft: "2em" }}
+      >
+        Github
       </button>
       {
         isRulesShowing &&
