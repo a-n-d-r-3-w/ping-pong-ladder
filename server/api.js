@@ -98,15 +98,42 @@ server.post('/api/swap', async (req, res, next) => {
 
   const player1 = await connectRunClose('players', players => players.findOne({ playerId: player1Id }))
   const player2 = await connectRunClose('players', players => players.findOne({ playerId: player2Id }))
-  const player1Rank = player1.rank
-  const player2Rank = player2.rank
+
+  const player1NewRank = player2.rank
+  const player2NewRank = player1.rank
+
+  let winner, loser
+  if (player1NewRank < player2NewRank) {
+    winner = player1
+    loser = player2
+  } else {
+    winner = player2
+    loser = player1
+  }
 
   await connectRunClose('players', players => players.updateOne(
     { playerId: player1Id },
-    { $set: { rank: player2Rank } }))
+    { $set: { rank: player1NewRank } }))
   await connectRunClose('players', players => players.updateOne(
     { playerId: player2Id },
-    { $set: { rank: player1Rank } }))
+    { $set: { rank: player2NewRank } }))
+
+  // Record swap
+  const timestamp = Date.now()
+  const timestampStr = new Date().toLocaleTimeString('en-US', {
+    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+    hour: 'numeric', minute: 'numeric'
+  })
+
+  await connectRunClose('swaps', swaps => swaps.insertOne({
+    timestamp,
+    timestampStr,
+    winnerName: winner.name,
+    winnerRank: Math.min(player1.rank, player2.rank),
+    loserName: loser.name,
+    loserRank: Math.max(player1.rank, player2.rank),
+  }))
+
   res.send(HttpStatus.NO_CONTENT)
   next()
 })
