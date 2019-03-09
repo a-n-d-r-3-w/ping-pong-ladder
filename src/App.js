@@ -28,6 +28,33 @@ const rankString = number => {
   if (number === 23) {
     return '23rd';
   }
+  if (number === 31) {
+    return '31st';
+  }
+  if (number === 32) {
+    return '32nd';
+  }
+  if (number === 33) {
+    return '33rd';
+  }
+  if (number === 41) {
+    return '41st';
+  }
+  if (number === 42) {
+    return '42nd';
+  }
+  if (number === 43) {
+    return '43rd';
+  }
+  if (number === 51) {
+    return '51st';
+  }
+  if (number === 52) {
+    return '52nd';
+  }
+  if (number === 53) {
+    return '53rd';
+  }
   return `${number}th`;
 }
 
