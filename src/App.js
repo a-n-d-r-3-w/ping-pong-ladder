@@ -1,4 +1,5 @@
 import React, {Fragment} from 'react';
+import ordinal from 'ordinal';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {
@@ -9,55 +10,6 @@ import {
   getSwaps,
 } from './actions';
 import diskun from './images/diskun.png'
-
-const rankString = number => {
-  if (number === 1) {
-    return '1st';
-  }
-  if (number === 2) {
-    return '2nd';
-  }
-  if (number === 3) {
-    return '3rd';
-  }
-  if (number === 21) {
-    return '21st';
-  }
-  if (number === 22) {
-    return '22nd';
-  }
-  if (number === 23) {
-    return '23rd';
-  }
-  if (number === 31) {
-    return '31st';
-  }
-  if (number === 32) {
-    return '32nd';
-  }
-  if (number === 33) {
-    return '33rd';
-  }
-  if (number === 41) {
-    return '41st';
-  }
-  if (number === 42) {
-    return '42nd';
-  }
-  if (number === 43) {
-    return '43rd';
-  }
-  if (number === 51) {
-    return '51st';
-  }
-  if (number === 52) {
-    return '52nd';
-  }
-  if (number === 53) {
-    return '53rd';
-  }
-  return `${number}th`;
-}
 
 const timeString = timestamp => new Date(timestamp).toLocaleTimeString('en-US', {
   weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'
@@ -212,7 +164,7 @@ class App extends React.Component {
               return (
                 <tr
                   className={isMarked ? 'table-active' : ''}>
-                  <td>{rankString(player.rank)}</td>
+                  <td>{ordinal(player.rank)}</td>
                   <td>{player.name}</td>
                   <td>
                     <div className="btn-group" role="group">
