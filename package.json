@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "npm run build && node ./server/api.js",
-    "start:dev": "react-scripts start",
+    "start:server:dev": "nodemon ./server/api.js",
+    "start:client:dev": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -49,5 +50,6 @@
   "engines": {
     "node": "8.12.0"
   },
-  "repository": "https://github.com/a-n-d-r-3-w/ping-pong-ladder"
+  "repository": "https://github.com/a-n-d-r-3-w/ping-pong-ladder",
+  "proxy": "http://localhost:8000"
 }
