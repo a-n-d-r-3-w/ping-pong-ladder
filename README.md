@@ -6,5 +6,5 @@ See https://en.wikipedia.org/wiki/Ladder_tournament.
 ## Getting started
 ```
 npm install
-npm start
+npm run dev
 ```
