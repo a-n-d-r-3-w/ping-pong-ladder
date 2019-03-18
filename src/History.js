@@ -33,7 +33,7 @@ const History = ({ swaps }) => (
       <tr style={{ margin: "1em 0" }} key={index}>
         <td>
           {timeString(swap.timestamp)}:<br />
-          {swap.winnerName} (#{swap.loserRank}) {takesString()} the #{swap.winnerRank} spot from {swap.loserName}!
+          {swap.winnerName} (#{swap.loserRank}) {takesString()} the #{swap.winnerRank} spot from {swap.loserName}.
         </td>
       </tr>
     )) }
