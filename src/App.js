@@ -9,53 +9,18 @@ import {
   swapRanks,
   getSwaps,
 } from './actions';
-import diskun from './images/diskun.png'
-
-const timeString = timestamp => new Date(timestamp).toLocaleTimeString('en-US', {
-  weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'
-})
-
-const takesString = () => {
-  const synonyms = [
-    'takes',
-    'grabs',
-    'steals',
-    'seizes',
-    'plucks',
-    'snags',
-    'swipes',
-    'nabs',
-    'snatches',
-    'clinches',
-    'captures',
-    'earns',
-    'attains',
-    'acquires',
-    'secures',
-  ]
-  const randomIndex = Math.floor(Math.random() * synonyms.length)
-  return synonyms[randomIndex]
-}
-
-const goToGithub = () => {
-   window.location.href = 'https://github.com/a-n-d-r-3-w/ping-pong-ladder'
-}
+import Header from './Header';
+import History from './History';
 
 class App extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
       markedPlayer: null,
-      isRulesShowing: false,
     }
-    this.handleToggleRulesButtonClick = this.handleToggleRulesButtonClick.bind(this);
     this.handleAddButtonClick = this.handleAddButtonClick.bind(this);
     this.handleDeleteButtonClick = this.handleDeleteButtonClick.bind(this);
     this.handleMarkButtonClick = this.handleMarkButtonClick.bind(this);
-  }
-
-  handleToggleRulesButtonClick () {
-    this.setState(state => ({ isRulesShowing: !state.isRulesShowing }));
   }
 
   handleAddButtonClick () {
@@ -98,44 +63,12 @@ class App extends React.Component {
 
   render() {
     const { isLoading, players, swaps } = this.props;
-    const { isRulesShowing } = this.state;
-    const title = <div style={{ marginBottom: '1em' }}>
-      <h1 style={{ margin: '1em 0', textAlign: 'center' }}>
-        <img src={diskun} alt="diskun" />
-        Ping-Pong Ladder
-      </h1>
-      <button
-        className="btn btn-sm btn-link"
-        onClick={this.handleToggleRulesButtonClick}
-      >
-        {isRulesShowing ? 'Hide' : 'Show'} rules
-      </button>
-      <button
-        className="btn btn-sm btn-link"
-        onClick={goToGithub}
-        style={{ marginLeft: "2em" }}
-      >
-        Github
-      </button>
-      {
-        isRulesShowing &&
-        <ul style={{margin: '1em 0'}}>
-          <li>Any player can challenge a player <em>within 3 rungs above</em> them on the ladder.</li>
-          <li>These challenges generally should not or can not be declined.</li>
-          <li>If the lower-placed player wins the match, then the two players swap places on the ladder.</li>
-          <li>
-            If the lower-placed player loses, then they may not challenge the same person again without challenging
-            someone else first.
-          </li>
-          <li>Have fun!</li>
-        </ul>
-      }
-    </div>;
+    const header = <Header />;
 
     if (isLoading || !players) {
       return (
         <Fragment>
-          {title}
+          {header}
           <div>Loading...</div>
         </Fragment>
       );
@@ -143,19 +76,8 @@ class App extends React.Component {
 
     return (
       <Fragment>
-        {title}
-        <table className="table">
-          <tbody>
-            { swaps.map((swap, index) => (
-              <tr style={{ margin: "1em 0" }} key={index}>
-                <td>
-                  {timeString(swap.timestamp)}:<br />
-                  {swap.winnerName} (#{swap.loserRank}) {takesString()} the #{swap.winnerRank} spot from {swap.loserName}!
-                </td>
-              </tr>
-            )) }
-          </tbody>
-        </table>
+        {header}
+        <History swaps={swaps} />
         <table className="table">
           <thead>
             <tr>
