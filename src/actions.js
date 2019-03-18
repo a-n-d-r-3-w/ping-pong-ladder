@@ -54,7 +54,7 @@ export function getSwaps () {
       type: SET_IS_LOADING,
       isLoading: true,
     });
-    axios.get(`/api/swaps`)
+    axios.get(`/api/playerSwaps`)
       .then(response => {
         dispatch({
           type: SET_IS_LOADING,
@@ -90,7 +90,7 @@ export function swapRanks (player1Id, player2Id) {
       type: SET_IS_LOADING,
       isLoading: true,
     });
-    axios.post('/api/swaps', { player1Id, player2Id })
+    axios.post('/api/playerSwaps', { player1Id, player2Id })
       .then(() => {
         dispatch({
           type: SET_IS_LOADING,

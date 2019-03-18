@@ -45,7 +45,7 @@ const getSortedPlayers = async () => {
 }
 
 // Get swap history
-server.get('/api/swaps', async (req, res, next) => {
+server.get('/api/playerSwaps', async (req, res, next) => {
   const swaps = await connectRunClose('playerSwaps', swaps => swaps.find({}, { sort:  [['timestamp', -1]], limit: 5 }).toArray())
   res.send(HttpStatus.OK, swaps)
   next()
@@ -89,7 +89,7 @@ server.post('/api/players', async (req, res, next) => {
 })
 
 // Swap ranks
-server.post('/api/swaps', async (req, res, next) => {
+server.post('/api/playerSwaps', async (req, res, next) => {
   if (!req.body) {
     res.send(HttpStatus.BAD_REQUEST, 'Player IDs are missing.')
     next()
