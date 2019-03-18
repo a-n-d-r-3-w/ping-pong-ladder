@@ -1,16 +1,14 @@
 import React, {Fragment} from 'react';
-import ordinal from 'ordinal';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {
   createPlayer,
   getPlayers,
-  deletePlayer,
-  swapRanks,
   getSwaps,
 } from './actions';
 import Header from './Header';
 import History from './History';
+import Rankings from './Rankings';
 
 class App extends React.Component {
   constructor (props) {
@@ -19,8 +17,6 @@ class App extends React.Component {
       markedPlayer: null,
     }
     this.handleAddButtonClick = this.handleAddButtonClick.bind(this);
-    this.handleDeleteButtonClick = this.handleDeleteButtonClick.bind(this);
-    this.handleMarkButtonClick = this.handleMarkButtonClick.bind(this);
   }
 
   handleAddButtonClick () {
@@ -29,31 +25,6 @@ class App extends React.Component {
       return;
     }
     this.props.createPlayer(name);
-  }
-
-  handleMarkButtonClick (player) {
-    return () => {
-      if (!this.state.markedPlayer) {
-        this.setState({ markedPlayer: player });
-        return;
-      }
-      const player1 = this.state.markedPlayer;
-      const player2 = player;
-      const confirmed = window.confirm(`Swap ${player1.name} and ${player2.name}?`);
-      if (confirmed) {
-        this.props.swapRanks(player1.playerId, player2.playerId);
-      }
-      this.setState({ markedPlayer: null });
-    };
-  }
-
-  handleDeleteButtonClick ({name, playerId}) {
-    return () => {
-      const confirmed = window.confirm(`Delete ${name}?`);
-      if (confirmed) {
-        this.props.deletePlayer(playerId);
-      }
-    };
   }
 
   componentDidMount () {
@@ -78,48 +49,7 @@ class App extends React.Component {
       <Fragment>
         {header}
         <History swaps={swaps} />
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Rank</th>
-              <th>Name</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {
-              this.props.players.map((player, index) => {
-                const isMarked = this.state.markedPlayer && (this.state.markedPlayer.playerId === player.playerId);
-                return (
-                  <tr
-                    className={isMarked ? 'table-active' : ''}
-                    key={index}
-                  >
-                    <td>{ordinal(player.rank)}</td>
-                    <td>{player.name}</td>
-                    <td>
-                      <div className="btn-group" role="group">
-                        <button
-                          className="btn btn-sm btn-link"
-                          onClick={this.handleMarkButtonClick(player)}
-                          disabled={isMarked}
-                        >
-                          Mark for swap
-                        </button>
-                        <button
-                          className="btn btn-sm btn-link text-secondary"
-                          onClick={this.handleDeleteButtonClick(player)}
-                          disabled={isMarked}
-                        >
-                          Delete
-                        </button>
-                      </div>
-                    </td>
-                  </tr>);
-              })
-            }
-          </tbody>
-        </table>
+        <Rankings />
         <button
           type='button'
           className="btn btn-outline-secondary"
@@ -134,9 +64,7 @@ class App extends React.Component {
 
 App.propTypes = {
   createPlayer: PropTypes.func.isRequired,
-  deletePlayer: PropTypes.func.isRequired,
   getPlayers: PropTypes.func.isRequired,
-  swapRanks: PropTypes.func.isRequired,
   getSwaps: PropTypes.func.isRequired,
 };
 
@@ -148,9 +76,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   createPlayer: name => dispatch(createPlayer(name)),
-  deletePlayer: playerId => dispatch(deletePlayer(playerId)),
   getPlayers: () => dispatch(getPlayers()),
-  swapRanks: (player1Id, player2Id) => dispatch(swapRanks(player1Id, player2Id)),
   getSwaps: () => dispatch(getSwaps()),
 });
 
