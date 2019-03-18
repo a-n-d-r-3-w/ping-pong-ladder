@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const SET_PLAYERS = 'SET_PLAYERS';
-export const SET_SWAPS = 'SET_SWAPS';
+export const SET_PLAYER_SWAPS = 'SET_PLAYER_SWAPS';
 export const SET_IS_LOADING = 'SET_IS_LOADING';
 
 export function createPlayer (name) {
@@ -48,7 +48,7 @@ export function getPlayers () {
   }
 }
 
-export function getSwaps () {
+export function getPlayerSwaps () {
   return function (dispatch) {
     dispatch({
       type: SET_IS_LOADING,
@@ -60,10 +60,10 @@ export function getSwaps () {
           type: SET_IS_LOADING,
           isLoading: false,
         });
-        const swaps = response.data;
+        const playerSwaps = response.data;
         dispatch({
-          type: SET_SWAPS,
-          swaps,
+          type: SET_PLAYER_SWAPS,
+          playerSwaps,
         });
       })
       .catch(error => {
@@ -97,7 +97,7 @@ export function swapRanks (player1Id, player2Id) {
           isLoading: false,
         });
         dispatch(getPlayers())
-        dispatch(getSwaps())
+        dispatch(getPlayerSwaps())
       })
       .catch(error => {
         console.error(error);

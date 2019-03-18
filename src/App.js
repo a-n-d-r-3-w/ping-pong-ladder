@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {
   getPlayers,
-  getSwaps,
+  getPlayerSwaps,
 } from './actions';
 import Header from './Header';
 import History from './History';
@@ -12,12 +12,12 @@ import AddPlayer from './AddPlayer';
 
 class App extends React.Component {
   componentDidMount () {
-    this.props.getSwaps();
+    this.props.getPlayerSwaps();
     this.props.getPlayers();
   }
 
   render() {
-    const { isLoading, players, swaps } = this.props;
+    const { isLoading, players, playerSwaps } = this.props;
     const header = <Header />;
 
     if (isLoading || !players) {
@@ -32,7 +32,7 @@ class App extends React.Component {
     return (
       <Fragment>
         {header}
-        <History swaps={swaps} />
+        <History swaps={playerSwaps} />
         <Rankings />
         <AddPlayer />
       </Fragment>);
@@ -41,18 +41,18 @@ class App extends React.Component {
 
 App.propTypes = {
   getPlayers: PropTypes.func.isRequired,
-  getSwaps: PropTypes.func.isRequired,
+  getPlayerSwaps: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
   isLoading: state.isLoading,
   players: state.players,
-  swaps: state.swaps
+  playerSwaps: state.playerSwaps
 });
 
 const mapDispatchToProps = dispatch => ({
   getPlayers: () => dispatch(getPlayers()),
-  getSwaps: () => dispatch(getSwaps()),
+  getPlayerSwaps: () => dispatch(getPlayerSwaps()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

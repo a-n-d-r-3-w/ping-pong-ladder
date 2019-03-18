@@ -46,8 +46,8 @@ const getSortedPlayers = async () => {
 
 // Get swap history
 server.get('/api/playerSwaps', async (req, res, next) => {
-  const swaps = await connectRunClose('playerSwaps', swaps => swaps.find({}, { sort:  [['timestamp', -1]], limit: 5 }).toArray())
-  res.send(HttpStatus.OK, swaps)
+  const playerSwaps = await connectRunClose('playerSwaps', swaps => swaps.find({}, { sort:  [['timestamp', -1]], limit: 5 }).toArray())
+  res.send(HttpStatus.OK, playerSwaps)
   next()
 })
 
