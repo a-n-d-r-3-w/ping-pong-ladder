@@ -11,13 +11,6 @@ import Rankings from './Rankings';
 import AddPlayer from './AddPlayer';
 
 class App extends React.Component {
-  constructor (props) {
-    super(props);
-    this.state = {
-      markedPlayer: null,
-    }
-  }
-
   componentDidMount () {
     this.props.getSwaps();
     this.props.getPlayers();
