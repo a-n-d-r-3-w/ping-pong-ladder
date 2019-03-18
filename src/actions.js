@@ -3,7 +3,6 @@ import axios from "axios";
 export const SET_PLAYERS = 'SET_PLAYERS';
 export const SET_SWAPS = 'SET_SWAPS';
 export const SET_IS_LOADING = 'SET_IS_LOADING';
-export const SET_IS_SAVING = 'SET_IS_SAVING';
 
 export function createPlayer (name) {
   return function (dispatch) {
