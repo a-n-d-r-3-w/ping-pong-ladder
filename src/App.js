@@ -10,32 +10,7 @@ import {
   getSwaps,
 } from './actions';
 import diskun from './images/diskun.png'
-
-const timeString = timestamp => new Date(timestamp).toLocaleTimeString('en-US', {
-  weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric'
-})
-
-const takesString = () => {
-  const synonyms = [
-    'takes',
-    'grabs',
-    'steals',
-    'seizes',
-    'plucks',
-    'snags',
-    'swipes',
-    'nabs',
-    'snatches',
-    'clinches',
-    'captures',
-    'earns',
-    'attains',
-    'acquires',
-    'secures',
-  ]
-  const randomIndex = Math.floor(Math.random() * synonyms.length)
-  return synonyms[randomIndex]
-}
+import History from './History'
 
 const goToGithub = () => {
    window.location.href = 'https://github.com/a-n-d-r-3-w/ping-pong-ladder'
@@ -144,18 +119,7 @@ class App extends React.Component {
     return (
       <Fragment>
         {title}
-        <table className="table">
-          <tbody>
-            { swaps.map((swap, index) => (
-              <tr style={{ margin: "1em 0" }} key={index}>
-                <td>
-                  {timeString(swap.timestamp)}:<br />
-                  {swap.winnerName} (#{swap.loserRank}) {takesString()} the #{swap.winnerRank} spot from {swap.loserName}!
-                </td>
-              </tr>
-            )) }
-          </tbody>
-        </table>
+        <History swaps={swaps} />
         <table className="table">
           <thead>
             <tr>
