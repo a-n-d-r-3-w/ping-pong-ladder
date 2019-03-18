@@ -89,7 +89,7 @@ server.post('/api/players', async (req, res, next) => {
 })
 
 // Swap ranks
-server.post('/api/swap', async (req, res, next) => {
+server.post('/api/swaps', async (req, res, next) => {
   if (!req.body) {
     res.send(HttpStatus.BAD_REQUEST, 'Player IDs are missing.')
     next()

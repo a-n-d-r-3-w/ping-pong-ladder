@@ -91,7 +91,7 @@ export function swapRanks (player1Id, player2Id) {
       type: SET_IS_LOADING,
       isLoading: true,
     });
-    axios.post('/api/swap', { player1Id, player2Id })
+    axios.post('/api/swaps', { player1Id, player2Id })
       .then(() => {
         dispatch({
           type: SET_IS_LOADING,
