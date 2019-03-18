@@ -44,18 +44,37 @@ const getSortedPlayers = async () => {
   return await connectRunClose('players', players => players.find({}, { sort:  [['rank', 1]] }).toArray())
 }
 
-// Get swap history
+const getSortedTeams = async () => {
+  return await connectRunClose('teams', teams => teams.find({}, { sort:  [['rank', 1]] }).toArray())
+}
+
+// Get player swap history
 server.get('/api/playerSwaps', async (req, res, next) => {
   const playerSwaps = await connectRunClose('playerSwaps', swaps => swaps.find({}, { sort:  [['timestamp', -1]], limit: 5 }).toArray())
   res.send(HttpStatus.OK, playerSwaps)
   next()
 })
 
+// Get team swaps history
+server.get('/api/teamSwaps', async (req, res, next) => {
+  const teamSwaps = await connectRunClose('teamSwaps', swaps => swaps.find({}, { sort:  [['timestamp', -1]], limit: 5 }).toArray())
+  res.send(HttpStatus.OK, teamSwaps)
+  next()
+})
+
 // Get all players
 server.get('/api/players', async (req, res, next) => {
-  await cleanUpRanks()
+  await cleanUpPlayerRanks()
   const players = await getSortedPlayers()
   res.send(HttpStatus.OK, players)
+  next()
+})
+
+// Get all teams
+server.get('/api/teams', async (req, res, next) => {
+  await cleanUpTeamRanks()
+  const teams = await getSortedTeams()
+  res.send(HttpStatus.OK, teams)
   next()
 })
 
@@ -75,7 +94,7 @@ server.post('/api/players', async (req, res, next) => {
   }
 
   const playerId = shortid.generate()
-  await cleanUpRanks()
+  await cleanUpPlayerRanks()
   const players = await getSortedPlayers()
   const rank = players.length + 1
   const result = await connectRunClose('players', players => players.insertOne({ playerId, name, rank }))
@@ -88,7 +107,36 @@ server.post('/api/players', async (req, res, next) => {
   next()
 })
 
-// Swap ranks
+// Create team
+server.post('/api/teams', async (req, res, next) => {
+  if (!req.body) {
+    res.send(HttpStatus.BAD_REQUEST, 'Name is missing.')
+    next()
+    return
+  }
+
+  const { name } = req.body
+  if (name.trim().length === 0) {
+    res.send(HttpStatus.BAD_REQUEST, 'Name is empty.')
+    next()
+    return
+  }
+
+  const teamId = shortid.generate()
+  await cleanUpTeamRanks()
+  const teams = await getSortedTeams()
+  const rank = teams.length + 1
+  const result = await connectRunClose('teams', teams => teams.insertOne({ teamId, name, rank }))
+  if (result.result.ok === 1) {
+    res.send(HttpStatus.CREATED, { teamId })
+    next()
+    return
+  }
+  res.send(HttpStatus.INTERNAL_SERVER_ERROR)
+  next()
+})
+
+// Swap player ranks
 server.post('/api/playerSwaps', async (req, res, next) => {
   if (!req.body) {
     res.send(HttpStatus.BAD_REQUEST, 'Player IDs are missing.')
@@ -140,8 +188,59 @@ server.post('/api/playerSwaps', async (req, res, next) => {
   next()
 })
 
-// Clean up ranks
-const cleanUpRanks = async () => {
+// Swap team ranks
+server.post('/api/teamSwaps', async (req, res, next) => {
+  if (!req.body) {
+    res.send(HttpStatus.BAD_REQUEST, 'Player IDs are missing.')
+    next()
+    return
+  }
+
+  const { team1Id, team2Id } = req.body
+  if (!team1Id || !team2Id) {
+    res.send(HttpStatus.BAD_REQUEST, 'Missing player IDs.')
+    next()
+    return
+  }
+
+  const team1 = await connectRunClose('teams', teams => teams.findOne({ playerId: team1Id }))
+  const team2 = await connectRunClose('teams', teams => teams.findOne({ playerId: team2Id }))
+
+  const team1NewRank = team2.rank
+  const team2NewRank = team1.rank
+
+  let winner, loser
+  if (team1NewRank < team2NewRank) {
+    winner = team1
+    loser = team2
+  } else {
+    winner = team2
+    loser = team1
+  }
+
+  await connectRunClose('teams', teams => teams.updateOne(
+    { teamId: team1Id },
+    { $set: { rank: team1NewRank } }))
+  await connectRunClose('teams', teams => teams.updateOne(
+    { teamId: team2Id },
+    { $set: { rank: team2NewRank } }))
+
+  // Record swap
+  const timestamp = Date.now()
+
+  await connectRunClose('teamSwaps', swaps => swaps.insertOne({
+    timestamp,
+    winnerName: winner.name,
+    winnerRank: Math.min(team1.rank, team2.rank),
+    loserName: loser.name,
+    loserRank: Math.max(team1.rank, team2.rank),
+  }))
+
+  res.send(HttpStatus.NO_CONTENT)
+  next()
+})
+
+const cleanUpPlayerRanks = async () => {
   const players = await getSortedPlayers()
   for (let i = 0; i < players.length; i++) {
     const player = players[i];
@@ -152,11 +251,31 @@ const cleanUpRanks = async () => {
   }
 }
 
+const cleanUpTeamRanks = async () => {
+  const teams = await getSortedTeams()
+  for (let i = 0; i < teams.length; i++) {
+    const team = teams[i];
+    const { teamId } = team;
+    await connectRunClose('teams', teams => teams.updateOne(
+      { teamId },
+      { $set: { rank: i + 1 } }))
+  }
+}
+
 // Delete specific player
 server.del('/api/players/:playerId', async (req, res, next) => {
   const { playerId } = req.params
   await connectRunClose('players', players => players.deleteOne({ playerId }))
-  await cleanUpRanks()
+  await cleanUpPlayerRanks()
+  res.send(HttpStatus.NO_CONTENT)
+  next()
+})
+
+// Delete specific team
+server.del('/api/teams/:teamId', async (req, res, next) => {
+  const { teamId } = req.params
+  await connectRunClose('teams', teams => teams.deleteOne({ teamId }))
+  await cleanUpTeamRanks()
   res.send(HttpStatus.NO_CONTENT)
   next()
 })
