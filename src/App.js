@@ -2,13 +2,13 @@ import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {
-  createPlayer,
   getPlayers,
   getSwaps,
 } from './actions';
 import Header from './Header';
 import History from './History';
 import Rankings from './Rankings';
+import AddPlayer from './AddPlayer';
 
 class App extends React.Component {
   constructor (props) {
@@ -16,15 +16,6 @@ class App extends React.Component {
     this.state = {
       markedPlayer: null,
     }
-    this.handleAddButtonClick = this.handleAddButtonClick.bind(this);
-  }
-
-  handleAddButtonClick () {
-    const name = window.prompt("Enter name:");
-    if (!name) {
-      return;
-    }
-    this.props.createPlayer(name);
   }
 
   componentDidMount () {
@@ -50,20 +41,12 @@ class App extends React.Component {
         {header}
         <History swaps={swaps} />
         <Rankings />
-        <button
-          type='button'
-          className="btn btn-outline-secondary"
-          onClick={this.handleAddButtonClick}
-          style={{margin: '1em 0 10em 0'}}
-        >
-          Add player
-        </button>
+        <AddPlayer />
       </Fragment>);
   }
 }
 
 App.propTypes = {
-  createPlayer: PropTypes.func.isRequired,
   getPlayers: PropTypes.func.isRequired,
   getSwaps: PropTypes.func.isRequired,
 };
@@ -75,7 +58,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  createPlayer: name => dispatch(createPlayer(name)),
   getPlayers: () => dispatch(getPlayers()),
   getSwaps: () => dispatch(getSwaps()),
 });
