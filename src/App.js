@@ -145,48 +145,58 @@ class App extends React.Component {
       <Fragment>
         {title}
         <table className="table">
-          { swaps.map(swap => (
-            <div style={{ margin: "1em 0" }}>
-              {timeString(swap.timestamp)}:<br />
-              {swap.winnerName} (#{swap.loserRank}) {takesString()} the #{swap.winnerRank} spot from {swap.loserName}!
-            </div>
-          )) }
+          <tbody>
+            { swaps.map((swap, index) => (
+              <tr style={{ margin: "1em 0" }} key={index}>
+                <td>
+                  {timeString(swap.timestamp)}:<br />
+                  {swap.winnerName} (#{swap.loserRank}) {takesString()} the #{swap.winnerRank} spot from {swap.loserName}!
+                </td>
+              </tr>
+            )) }
+          </tbody>
         </table>
         <table className="table">
-          <tr>
-            <th>Rank</th>
-            <th>Name</th>
-            <th>Actions</th>
-          </tr>
-          {
-            this.props.players.map(player => {
-              const isMarked = this.state.markedPlayer && (this.state.markedPlayer.playerId === player.playerId);
-              return (
-                <tr
-                  className={isMarked ? 'table-active' : ''}>
-                  <td>{ordinal(player.rank)}</td>
-                  <td>{player.name}</td>
-                  <td>
-                    <div className="btn-group" role="group">
-                      <button
-                        className="btn btn-sm btn-link"
-                        onClick={this.handleMarkButtonClick(player)}
-                        disabled={isMarked}
-                      >
-                        Mark for swap
-                      </button>
-                      <button
-                        className="btn btn-sm btn-link text-secondary"
-                        onClick={this.handleDeleteButtonClick(player)}
-                        disabled={isMarked}
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </td>
-                </tr>);
-            })
-          }
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Name</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              this.props.players.map((player, index) => {
+                const isMarked = this.state.markedPlayer && (this.state.markedPlayer.playerId === player.playerId);
+                return (
+                  <tr
+                    className={isMarked ? 'table-active' : ''}
+                    key={index}
+                  >
+                    <td>{ordinal(player.rank)}</td>
+                    <td>{player.name}</td>
+                    <td>
+                      <div className="btn-group" role="group">
+                        <button
+                          className="btn btn-sm btn-link"
+                          onClick={this.handleMarkButtonClick(player)}
+                          disabled={isMarked}
+                        >
+                          Mark for swap
+                        </button>
+                        <button
+                          className="btn btn-sm btn-link text-secondary"
+                          onClick={this.handleDeleteButtonClick(player)}
+                          disabled={isMarked}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </td>
+                  </tr>);
+              })
+            }
+          </tbody>
         </table>
         <button
           type='button'
