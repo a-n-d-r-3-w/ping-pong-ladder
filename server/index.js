@@ -249,7 +249,7 @@ const cleanUpPlayerRanks = async () => {
       {
         $set: {
           rank: i + 1,
-          pingPongLadderId: playerId
+          teamId: playerId,
         }
       }
       )
