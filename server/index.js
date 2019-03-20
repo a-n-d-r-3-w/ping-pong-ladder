@@ -47,27 +47,19 @@ server.get('/api/health', (req, res, next) => {
   next()
 })
 
-const getSortedPlayers = async () => {
-  return await connectRunClose(Collection.PLAYERS, players => players.find({}, { sort:  [['rank', 1]] }).toArray())
-}
+const getSorted = async collectionName =>
+  await connectRunClose(collectionName, players => players.find({}, { sort: [['rank', 1]] }).toArray())
+const getSortedPlayers = async () => await getSorted(Collection.PLAYERS)
+const getSortedTeams = async () => await getSorted(Collection.TEAMS)
 
-const getSortedTeams = async () => {
-  return await connectRunClose(Collection.TEAMS, teams => teams.find({}, { sort:  [['rank', 1]] }).toArray())
-}
-
-// Get player swap history
-server.get('/api/playerSwaps', async (req, res, next) => {
-  const playerSwaps = await connectRunClose(Collection.PLAYER_SWAPS, swaps => swaps.find({}, { sort:  [['timestamp', -1]], limit: 5 }).toArray())
-  res.send(HttpStatus.OK, playerSwaps)
+const getSwaps = collectionName => async (req, res, next) => {
+  const swaps = await connectRunClose(collectionName,
+      swaps => swaps.find({}, { sort:  [['timestamp', -1]], limit: 5 }).toArray())
+  res.send(HttpStatus.OK, swaps)
   next()
-})
-
-// Get team swaps history
-server.get('/api/teamSwaps', async (req, res, next) => {
-  const teamSwaps = await connectRunClose(Collection.TEAM_SWAPS, swaps => swaps.find({}, { sort:  [['timestamp', -1]], limit: 5 }).toArray())
-  res.send(HttpStatus.OK, teamSwaps)
-  next()
-})
+}
+server.get('/api/playerSwaps', getSwaps(Collection.PLAYER_SWAPS))
+server.get('/api/teamSwaps', getSwaps(Collection.TEAM_SWAPS))
 
 // Get all players
 server.get('/api/players', async (req, res, next) => {
