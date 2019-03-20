@@ -246,7 +246,14 @@ const cleanUpPlayerRanks = async () => {
     const { playerId } = player;
     await connectRunClose(Collection.PLAYERS, players => players.updateOne(
       { playerId },
-      { $set: { rank: i + 1 } }))
+      {
+        $set: {
+          rank: i + 1,
+          pingPongLadderId: playerId
+        }
+      }
+      )
+    )
   }
 }
 
