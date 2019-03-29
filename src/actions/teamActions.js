@@ -1,19 +1,19 @@
 import axios from 'axios';
 import ActionType from './ActionType';
 
-export function createPlayer (name) {
+export function createTeam (name) {
   return function (dispatch) {
     dispatch({
       type: ActionType.SET_IS_LOADING,
       isLoading: true,
     });
-    axios.post('/api/players', { name })
+    axios.post('/api/teams', { name })
       .then(() => {
         dispatch({
           type: ActionType.SET_IS_LOADING,
           isLoading: false,
         });
-        dispatch(getPlayers())
+        dispatch(getTeams())
       })
       .catch(error => {
         console.error(error);
@@ -21,22 +21,22 @@ export function createPlayer (name) {
   }
 }
 
-export function getPlayers () {
+export function getTeams () {
   return function (dispatch) {
     dispatch({
       type: ActionType.SET_IS_LOADING,
       isLoading: true,
     });
-    axios.get(`/api/players`)
+    axios.get(`/api/teams`)
       .then(response => {
         dispatch({
           type: ActionType.SET_IS_LOADING,
           isLoading: false,
         });
-        const players = response.data;
+        const teams = response.data;
         dispatch({
-          type: ActionType.SET_PLAYERS,
-          players,
+          type: ActionType.SET_TEAMS,
+          teams,
         });
       })
       .catch(error => {
@@ -45,22 +45,22 @@ export function getPlayers () {
   }
 }
 
-export function getPlayerSwaps () {
+export function getTeamSwaps () {
   return function (dispatch) {
     dispatch({
       type: ActionType.SET_IS_LOADING,
       isLoading: true,
     });
-    axios.get(`/api/playerSwaps`)
+    axios.get(`/api/teamSwaps`)
       .then(response => {
         dispatch({
           type: ActionType.SET_IS_LOADING,
           isLoading: false,
         });
-        const playerSwaps = response.data;
+        const teamSwaps = response.data;
         dispatch({
-          type: ActionType.SET_PLAYER_SWAPS,
-          playerSwaps,
+          type: ActionType.SET_TEAM_SWAPS,
+          teamSwaps,
         });
       })
       .catch(error => {
@@ -69,11 +69,11 @@ export function getPlayerSwaps () {
   }
 }
 
-export function deletePlayer (playerId) {
+export function deleteTeam (teamId) {
   return function (dispatch) {
-    axios.delete(`/api/players/${playerId}`)
+    axios.delete(`/api/teams/${teamId}`)
       .then(() => {
-        dispatch(getPlayers());
+        dispatch(getTeams());
       })
       .catch(error => {
         console.error(error);
@@ -81,20 +81,20 @@ export function deletePlayer (playerId) {
   }
 }
 
-export function swapPlayers (player1Id, player2Id) {
+export function swapTeams (team1Id, team2Id) {
   return function (dispatch) {
     dispatch({
       type: ActionType.SET_IS_LOADING,
       isLoading: true,
     });
-    axios.post('/api/playerSwaps', { player1Id, player2Id })
+    axios.post('/api/teamSwaps', { team1Id, team2Id })
       .then(() => {
         dispatch({
           type: ActionType.SET_IS_LOADING,
           isLoading: false,
         });
-        dispatch(getPlayers())
-        dispatch(getPlayerSwaps())
+        dispatch(getTeams())
+        dispatch(getTeamSwaps())
       })
       .catch(error => {
         console.error(error);

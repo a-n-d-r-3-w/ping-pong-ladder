@@ -3,7 +3,7 @@ import ordinal from 'ordinal';
 import {connect} from 'react-redux';
 import {
   deletePlayer,
-  swapRanks,
+  swapPlayers,
 } from './actions/playerActions';
 import PropTypes from "prop-types";
 
@@ -27,7 +27,7 @@ class Rankings extends React.Component {
       const player2 = player;
       const confirmed = window.confirm(`Swap ${player1.name} and ${player2.name}?`);
       if (confirmed) {
-        this.props.swapRanks(player1.playerId, player2.playerId);
+        this.props.swapPlayers(player1.playerId, player2.playerId);
       }
       this.setState({ markedPlayer: null });
     };
@@ -92,7 +92,7 @@ class Rankings extends React.Component {
 
 Rankings.propTypes = {
   deletePlayer: PropTypes.func.isRequired,
-  swapRanks: PropTypes.func.isRequired,
+  swapPlayers: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -101,7 +101,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   deletePlayer: playerId => dispatch(deletePlayer(playerId)),
-  swapRanks: (player1Id, player2Id) => dispatch(swapRanks(player1Id, player2Id)),
+  swapPlayers: (player1Id, player2Id) => dispatch(swapPlayers(player1Id, player2Id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Rankings);
