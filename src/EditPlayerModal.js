@@ -1,9 +1,9 @@
 import React from "react";
 import {connect} from 'react-redux';
 import {
-  savePlayer,
-  CLOSE_EDIT_MODAL
-} from './actions';
+  savePlayer
+} from './actions/playerActions';
+import ActionType from './actions/ActionType'
 import PropTypes from "prop-types";
 
 class EditPlayerModal extends React.Component {
@@ -79,7 +79,7 @@ EditPlayerModal.propTypes = {
   
   const mapDispatchToProps = dispatch => ({
     savePlayer: (playerId, playerName, slackName) => dispatch(savePlayer(playerId, playerName, slackName)),
-    closeModal: () => dispatch({ type: CLOSE_EDIT_MODAL }),
+    closeModal: () => dispatch({ type: ActionType.CLOSE_EDIT_MODAL }),
   });
   
   export default connect(mapStateToProps, mapDispatchToProps)(EditPlayerModal);

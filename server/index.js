@@ -228,20 +228,20 @@ server.post('/api/playerSwaps', async (req, res, next) => {
 // Swap team ranks
 server.post('/api/teamSwaps', async (req, res, next) => {
   if (!req.body) {
-    res.send(HttpStatus.BAD_REQUEST, 'Player IDs are missing.')
+    res.send(HttpStatus.BAD_REQUEST, 'Team IDs are missing.')
     next()
     return
   }
 
   const { team1Id, team2Id } = req.body
   if (!team1Id || !team2Id) {
-    res.send(HttpStatus.BAD_REQUEST, 'Missing player IDs.')
+    res.send(HttpStatus.BAD_REQUEST, 'Missing Team IDs.')
     next()
     return
   }
 
-  const team1 = await connectRunClose(Collection.TEAMS, teams => teams.findOne({ playerId: team1Id }))
-  const team2 = await connectRunClose(Collection.TEAMS, teams => teams.findOne({ playerId: team2Id }))
+  const team1 = await connectRunClose(Collection.TEAMS, teams => teams.findOne({ teamId: team1Id }))
+  const team2 = await connectRunClose(Collection.TEAMS, teams => teams.findOne({ teamId: team2Id }))
 
   const team1NewRank = team2.rank
   const team2NewRank = team1.rank

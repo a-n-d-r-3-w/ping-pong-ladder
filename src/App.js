@@ -4,24 +4,50 @@ import {connect} from 'react-redux';
 import {
   getPlayers,
   getPlayerSwaps,
-} from './actions';
+} from './actions/playerActions';
+import {
+  getTeams,
+  getTeamSwaps,
+} from './actions/teamActions';
 import Header from './Header';
-import History from './History';
-import Rankings from './Rankings';
+import Swaps from './Swaps';
+import PlayerRankings from './PlayerRankings';
+import TeamRankings from './TeamRankings';
 import AddPlayer from './AddPlayer';
-import EditPlayerModal from "./EditPlayerModal"
+import AddTeam from './AddTeam';
+import EditPlayerModal from "./EditPlayerModal";
 
 class App extends React.Component {
+  constructor (props) {
+    super(props);
+    this.state = { isSinglesSelected: true };
+    this.handleSinglesTabClick = this.handleSinglesTabClick.bind(this);
+    this.handleDoublesTabClick = this.handleDoublesTabClick.bind(this);
+  }
+
   componentDidMount () {
     this.props.getPlayerSwaps();
     this.props.getPlayers();
+    this.props.getTeamSwaps();
+    this.props.getTeams();
+  }
+
+  handleSinglesTabClick (event) {
+    event.preventDefault(); // Don't scroll to the top.
+    this.setState({ isSinglesSelected: true });
+  }
+
+  handleDoublesTabClick (event) {
+    event.preventDefault(); // Don't scroll to the top.
+    this.setState({ isSinglesSelected: false });
   }
 
   render() {
-    const { isLoading, players, playerSwaps } = this.props;
+    const { isLoading, players, playerSwaps, teams, teamSwaps } = this.props;
+    const { isSinglesSelected } = this.state;
     const header = <Header />;
 
-    if (isLoading || !players) {
+    if (isLoading || !players || !teams) {
       return (
         <Fragment>
           {header}
@@ -34,9 +60,29 @@ class App extends React.Component {
       <Fragment>
         {header}
         <EditPlayerModal />
-        <History swaps={playerSwaps} />
-        <Rankings />
-        <AddPlayer />
+        <ul className="nav nav-tabs">
+          <li className="nav-item">
+            <a className={`nav-link ${isSinglesSelected ? "active" : ""}`} href="#" onClick={this.handleSinglesTabClick}>Singles</a>
+          </li>
+          <li className="nav-item">
+            <a className={`nav-link ${isSinglesSelected ? "" : "active"}`} href="#" onClick={this.handleDoublesTabClick}>Doubles</a>
+          </li>
+        </ul>
+        {this.state.isSinglesSelected &&
+        <Fragment>
+          <Swaps swaps={playerSwaps} />
+            <PlayerRankings />
+            <AddPlayer />
+        </Fragment>
+        }
+
+        {!this.state.isSinglesSelected &&
+        <Fragment>
+          <Swaps swaps={teamSwaps}/>
+          <TeamRankings/>
+          <AddTeam/>
+        </Fragment>
+        }
       </Fragment>);
   }
 }
@@ -44,17 +90,23 @@ class App extends React.Component {
 App.propTypes = {
   getPlayers: PropTypes.func.isRequired,
   getPlayerSwaps: PropTypes.func.isRequired,
+  getTeams: PropTypes.func.isRequired,
+  getTeamSwaps: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
   isLoading: state.isLoading,
   players: state.players,
-  playerSwaps: state.playerSwaps
+  playerSwaps: state.playerSwaps,
+  teams: state.teams,
+  teamSwaps: state.teamSwaps
 });
 
 const mapDispatchToProps = dispatch => ({
   getPlayers: () => dispatch(getPlayers()),
   getPlayerSwaps: () => dispatch(getPlayerSwaps()),
+  getTeams: () => dispatch(getTeams()),
+  getTeamSwaps: () => dispatch(getTeamSwaps()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

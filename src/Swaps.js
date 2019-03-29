@@ -26,8 +26,8 @@ const takesString = () => {
   return synonyms[randomIndex]
 }
 
-const History = ({ swaps }) => (
-  <table className="table">
+const Swaps = ({ swaps }) => (
+  <table className="table table-borderless">
     <tbody>
     { swaps.map((swap, index) => (
       <tr style={{ margin: "1em 0" }} key={index}>
@@ -41,4 +41,4 @@ const History = ({ swaps }) => (
   </table>
 )
 
-export default History
+export default Swaps

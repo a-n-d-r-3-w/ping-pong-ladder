@@ -1,22 +1,16 @@
 import axios from "axios";
-
-export const SET_PLAYERS = 'SET_PLAYERS';
-export const SET_PLAYER_SWAPS = 'SET_PLAYER_SWAPS';
-export const SET_IS_LOADING = 'SET_IS_LOADING';
-export const EDIT_PLAYER = 'EDIT_PLAYER'
-export const SAVE_PLAYER = 'SAVE_PLAYER'
-export const CLOSE_EDIT_MODAL = 'CLOSE_EDIT_MODAL';
+import ActionType from './ActionType';
 
 export function createPlayer (name) {
   return function (dispatch) {
     dispatch({
-      type: SET_IS_LOADING,
+      type: ActionType.SET_IS_LOADING,
       isLoading: true,
     });
     axios.post('/api/players', { name })
       .then(() => {
         dispatch({
-          type: SET_IS_LOADING,
+          type: ActionType.SET_IS_LOADING,
           isLoading: false,
         });
         dispatch(getPlayers())
@@ -30,18 +24,18 @@ export function createPlayer (name) {
 export function getPlayers () {
   return function (dispatch) {
     dispatch({
-      type: SET_IS_LOADING,
+      type: ActionType.SET_IS_LOADING,
       isLoading: true,
     });
     axios.get(`/api/players`)
       .then(response => {
         dispatch({
-          type: SET_IS_LOADING,
+          type: ActionType.SET_IS_LOADING,
           isLoading: false,
         });
         const players = response.data;
         dispatch({
-          type: SET_PLAYERS,
+          type: ActionType.SET_PLAYERS,
           players,
         });
       })
@@ -54,18 +48,18 @@ export function getPlayers () {
 export function getPlayerSwaps () {
   return function (dispatch) {
     dispatch({
-      type: SET_IS_LOADING,
+      type: ActionType.SET_IS_LOADING,
       isLoading: true,
     });
     axios.get(`/api/playerSwaps`)
       .then(response => {
         dispatch({
-          type: SET_IS_LOADING,
+          type: ActionType.SET_IS_LOADING,
           isLoading: false,
         });
         const playerSwaps = response.data;
         dispatch({
-          type: SET_PLAYER_SWAPS,
+          type: ActionType.SET_PLAYER_SWAPS,
           playerSwaps,
         });
       })
@@ -87,16 +81,16 @@ export function deletePlayer (playerId) {
   }
 }
 
-export function swapRanks (player1Id, player2Id) {
+export function swapPlayers (player1Id, player2Id) {
   return function (dispatch) {
     dispatch({
-      type: SET_IS_LOADING,
+      type: ActionType.SET_IS_LOADING,
       isLoading: true,
     });
     axios.post('/api/playerSwaps', { player1Id, player2Id })
       .then(() => {
         dispatch({
-          type: SET_IS_LOADING,
+          type: ActionType.SET_IS_LOADING,
           isLoading: false,
         });
         dispatch(getPlayers())
@@ -111,7 +105,7 @@ export function swapRanks (player1Id, player2Id) {
 export function savePlayer (playerId, playerName, slackName) {
   return function (dispatch) {
     dispatch({
-      type: SET_IS_LOADING,
+      type: ActionType.SET_IS_LOADING,
       isLoading: true
     })
     axios.put(`/api/players/${playerId}`, {
@@ -119,9 +113,9 @@ export function savePlayer (playerId, playerName, slackName) {
       slackName
     })
       .then(() => {
-        dispatch({ type: SAVE_PLAYER })
+        dispatch({ type: ActionType.SAVE_PLAYER })
         dispatch({
-          type: SET_IS_LOADING,
+          type: ActionType.SET_IS_LOADING,
           isLoading: false,
         });
       })

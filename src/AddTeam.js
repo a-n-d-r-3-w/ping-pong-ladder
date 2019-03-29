@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {createPlayer} from './actions/playerActions';
+import {createTeam} from './actions/teamActions';
 import {connect} from "react-redux";
 
-class AddPlayer extends React.Component {
+class AddTeam extends React.Component {
   constructor (props) {
     super(props);
     this.handleAddButtonClick = this.handleAddButtonClick.bind(this);
@@ -14,7 +14,7 @@ class AddPlayer extends React.Component {
     if (!name) {
       return;
     }
-    this.props.createPlayer(name);
+    this.props.createTeam(name);
   }
 
   render() {
@@ -25,18 +25,18 @@ class AddPlayer extends React.Component {
         onClick={this.handleAddButtonClick}
         style={{margin: '1em 0 10em 0'}}
       >
-        Add player
+        Add team
       </button>
     )
   }
 }
 
-AddPlayer.propTypes = {
-  createPlayer: PropTypes.func.isRequired,
+AddTeam.propTypes = {
+  createTeam: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = dispatch => ({
-  createPlayer: name => dispatch(createPlayer(name)),
+  createTeam: name => dispatch(createTeam(name)),
 });
 
-export default connect(null, mapDispatchToProps)(AddPlayer);
+export default connect(null, mapDispatchToProps)(AddTeam);
