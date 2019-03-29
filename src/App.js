@@ -17,6 +17,11 @@ import AddPlayer from './AddPlayer';
 import AddTeam from './AddTeam';
 
 class App extends React.Component {
+  constructor (props) {
+    super(props);
+    this.state = { isSinglesSelected: true };
+  }
+
   componentDidMount () {
     this.props.getPlayerSwaps();
     this.props.getPlayers();
@@ -40,14 +45,23 @@ class App extends React.Component {
     return (
       <Fragment>
         {header}
-        <h1>Singles</h1>
-        <Swaps swaps={playerSwaps} />
-        <PlayerRankings />
-        <AddPlayer />
-        <h1>Doubles</h1>
-        <Swaps swaps={teamSwaps} />
-        <TeamRankings />
-        <AddTeam />
+        {this.state.isSinglesSelected &&
+        <Fragment>
+          <h1>Singles</h1>
+          <Swaps swaps={playerSwaps} />
+            <PlayerRankings />
+            <AddPlayer />
+        </Fragment>
+        }
+
+        {!this.state.isSinglesSelected &&
+        <Fragment>
+          <h1>Doubles</h1>
+          <Swaps swaps={teamSwaps}/>
+          <TeamRankings/>
+          <AddTeam/>
+        </Fragment>
+        }
       </Fragment>);
   }
 }
