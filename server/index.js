@@ -106,6 +106,44 @@ server.post('/api/players', async (req, res, next) => {
   next()
 })
 
+server.put('/api/players/:playerId', async (req, res, next) => {
+  if (!req.body) {
+    res.send(HttpStatus.BAD_REQUEST, 'Player IDs are missing.')
+    next()
+    return
+  }
+
+  const { playerId } = req.params
+  if (!playerId ) {
+    res.send(HttpStatus.BAD_REQUEST, 'Missing player ID.')
+    next()
+    return
+  }
+
+  const { playerName, slackName } = req.body
+  if (!slackName && !playerName ) {
+    res.send(HttpStatus.BAD_REQUEST, 'No data provided in update')
+    next()
+    return
+  }
+  
+  let updatedValues = {}
+  if (playerName)
+    updatedValues.name = playerName
+  if (slackName)
+    updatedValues.slackName = slackName
+  
+  const result = await connectRunClose(Collection.PLAYERS, players => players.updateOne(
+    { playerId: playerId },
+    { $set: updatedValues }))
+
+  if (result.result.ok === 1) {
+    res.send(HttpStatus.OK, { slackName })
+    next()
+    return
+  }
+})
+
 // Create team
 server.post('/api/teams', async (req, res, next) => {
   if (!req.body) {
