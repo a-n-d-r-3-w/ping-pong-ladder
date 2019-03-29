@@ -6,8 +6,8 @@ import {
   getPlayerSwaps,
 } from './actions/playerActions';
 import Header from './Header';
-import History from './History';
-import Rankings from './Rankings';
+import Swaps from './Swaps';
+import PlayerRankings from './PlayerRankings';
 import AddPlayer from './AddPlayer';
 
 class App extends React.Component {
@@ -32,8 +32,8 @@ class App extends React.Component {
     return (
       <Fragment>
         {header}
-        <History swaps={playerSwaps} />
-        <Rankings />
+        <Swaps swaps={playerSwaps} />
+        <PlayerRankings />
         <AddPlayer />
       </Fragment>);
   }

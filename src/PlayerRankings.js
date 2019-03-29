@@ -7,7 +7,7 @@ import {
 } from './actions/playerActions';
 import PropTypes from "prop-types";
 
-class Rankings extends React.Component {
+class PlayerRankings extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -90,7 +90,7 @@ class Rankings extends React.Component {
   }
 }
 
-Rankings.propTypes = {
+PlayerRankings.propTypes = {
   deletePlayer: PropTypes.func.isRequired,
   swapPlayers: PropTypes.func.isRequired,
 };
@@ -104,4 +104,4 @@ const mapDispatchToProps = dispatch => ({
   swapPlayers: (player1Id, player2Id) => dispatch(swapPlayers(player1Id, player2Id)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Rankings);
+export default connect(mapStateToProps, mapDispatchToProps)(PlayerRankings);
