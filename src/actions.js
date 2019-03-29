@@ -3,6 +3,9 @@ import axios from "axios";
 export const SET_PLAYERS = 'SET_PLAYERS';
 export const SET_PLAYER_SWAPS = 'SET_PLAYER_SWAPS';
 export const SET_IS_LOADING = 'SET_IS_LOADING';
+export const EDIT_PLAYER = 'EDIT_PLAYER'
+export const SAVE_PLAYER = 'SAVE_PLAYER'
+export const CLOSE_EDIT_MODAL = 'CLOSE_EDIT_MODAL';
 
 export function createPlayer (name) {
   return function (dispatch) {
@@ -98,6 +101,29 @@ export function swapRanks (player1Id, player2Id) {
         });
         dispatch(getPlayers())
         dispatch(getPlayerSwaps())
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }
+}
+
+export function savePlayer (playerId, playerName, slackName) {
+  return function (dispatch) {
+    dispatch({
+      type: SET_IS_LOADING,
+      isLoading: true
+    })
+    axios.put(`/api/players/${playerId}`, {
+      playerName,
+      slackName
+    })
+      .then(() => {
+        dispatch({ type: SAVE_PLAYER })
+        dispatch({
+          type: SET_IS_LOADING,
+          isLoading: false,
+        });
       })
       .catch(error => {
         console.error(error);

@@ -7,3 +7,26 @@
 * {
     font-family: 'Arcade', sans-serif;
 }
+
+.modal.show {
+    display: block;
+    margin: 0 auto;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.modal.show .modal-content {
+    width: 100%;
+    max-width: 40em;
+    margin: 0 auto;
+    top: 50%;
+    transform: translateY(-50%)
+}
+
+.modal-input {
+    margin: 0.5em;
+}
+
+.modal-input > span {
+    display: inline-block;
+    min-width: 7em;
+}

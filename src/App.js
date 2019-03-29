@@ -9,6 +9,7 @@ import Header from './Header';
 import History from './History';
 import Rankings from './Rankings';
 import AddPlayer from './AddPlayer';
+import EditPlayerModal from "./EditPlayerModal"
 
 class App extends React.Component {
   componentDidMount () {
@@ -32,6 +33,7 @@ class App extends React.Component {
     return (
       <Fragment>
         {header}
+        <EditPlayerModal />
         <History swaps={playerSwaps} />
         <Rankings />
         <AddPlayer />

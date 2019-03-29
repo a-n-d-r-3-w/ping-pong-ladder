@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import {
   deletePlayer,
   swapRanks,
+  EDIT_PLAYER
 } from './actions';
 import PropTypes from "prop-types";
 
@@ -40,6 +41,12 @@ class Rankings extends React.Component {
         this.props.deletePlayer(playerId);
       }
     };
+  }
+
+  handleEditButtonClick (player) {
+    return () => {
+      this.props.editPlayer(player)
+    }
   }
 
   render() {
@@ -79,6 +86,13 @@ class Rankings extends React.Component {
                     >
                       Delete
                     </button>
+                    <button
+                      className="btn btn-sm btn-link text-secondary"
+                      onClick={this.handleEditButtonClick(player)}
+                      disabled={isMarked}
+                    >
+                      Edit
+                    </button>
                   </div>
                 </td>
               </tr>);
@@ -102,6 +116,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   deletePlayer: playerId => dispatch(deletePlayer(playerId)),
   swapRanks: (player1Id, player2Id) => dispatch(swapRanks(player1Id, player2Id)),
+  editPlayer: (player) => dispatch({type: EDIT_PLAYER, player})
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Rankings);
