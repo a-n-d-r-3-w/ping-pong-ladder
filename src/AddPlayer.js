@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {createPlayer} from './actions';
+import {createPlayer} from './actions/playerActions';
 import {connect} from "react-redux";
 
 class AddPlayer extends React.Component {

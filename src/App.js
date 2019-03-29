@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {
   getPlayers,
   getPlayerSwaps,
-} from './actions';
+} from './actions/playerActions';
 import Header from './Header';
 import History from './History';
 import Rankings from './Rankings';

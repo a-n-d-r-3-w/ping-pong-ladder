@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {
   deletePlayer,
   swapRanks,
-} from './actions';
+} from './actions/playerActions';
 import PropTypes from "prop-types";
 
 class Rankings extends React.Component {
