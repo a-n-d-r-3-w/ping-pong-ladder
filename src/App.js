@@ -20,6 +20,8 @@ class App extends React.Component {
   constructor (props) {
     super(props);
     this.state = { isSinglesSelected: true };
+    this.handleSinglesTabClick = this.handleSinglesTabClick.bind(this);
+    this.handleDoublesTabClick = this.handleDoublesTabClick.bind(this);
   }
 
   componentDidMount () {
@@ -29,8 +31,19 @@ class App extends React.Component {
     this.props.getTeams();
   }
 
+  handleSinglesTabClick (event) {
+    event.preventDefault(); // Don't scroll to the top.
+    this.setState({ isSinglesSelected: true });
+  }
+
+  handleDoublesTabClick (event) {
+    event.preventDefault(); // Don't scroll to the top.
+    this.setState({ isSinglesSelected: false });
+  }
+
   render() {
     const { isLoading, players, playerSwaps, teams, teamSwaps } = this.props;
+    const { isSinglesSelected } = this.state;
     const header = <Header />;
 
     if (isLoading || !players || !teams) {
@@ -45,9 +58,16 @@ class App extends React.Component {
     return (
       <Fragment>
         {header}
+        <ul className="nav nav-tabs">
+          <li className="nav-item">
+            <a className={`nav-link ${isSinglesSelected ? "active" : ""}`} href="#" onClick={this.handleSinglesTabClick}>Singles</a>
+          </li>
+          <li className="nav-item">
+            <a className={`nav-link ${isSinglesSelected ? "" : "active"}`} href="#" onClick={this.handleDoublesTabClick}>Doubles</a>
+          </li>
+        </ul>
         {this.state.isSinglesSelected &&
         <Fragment>
-          <h1>Singles</h1>
           <Swaps swaps={playerSwaps} />
             <PlayerRankings />
             <AddPlayer />
@@ -56,7 +76,6 @@ class App extends React.Component {
 
         {!this.state.isSinglesSelected &&
         <Fragment>
-          <h1>Doubles</h1>
           <Swaps swaps={teamSwaps}/>
           <TeamRankings/>
           <AddTeam/>

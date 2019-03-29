@@ -27,7 +27,7 @@ const takesString = () => {
 }
 
 const Swaps = ({ swaps }) => (
-  <table className="table">
+  <table className="table table-borderless">
     <tbody>
     { swaps.map((swap, index) => (
       <tr style={{ margin: "1em 0" }} key={index}>
