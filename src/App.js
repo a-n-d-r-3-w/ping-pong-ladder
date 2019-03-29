@@ -14,6 +14,7 @@ import Swaps from './Swaps';
 import PlayerRankings from './PlayerRankings';
 import TeamRankings from './TeamRankings';
 import AddPlayer from './AddPlayer';
+import AddTeam from './AddTeam';
 
 class App extends React.Component {
   componentDidMount () {
@@ -46,7 +47,7 @@ class App extends React.Component {
         <h1>Doubles</h1>
         <Swaps swaps={teamSwaps} />
         <TeamRankings />
-        <AddPlayer />
+        <AddTeam />
       </Fragment>);
   }
 }
