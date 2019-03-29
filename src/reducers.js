@@ -14,6 +14,18 @@ const reducers = (state = {}, action) => {
         ...state,
         playerSwaps,
       };
+    case ActionType.SET_TEAMS:
+      const { teams } = action;
+      return {
+        ...state,
+        teams,
+      };
+    case ActionType.SET_TEAM_SWAPS:
+      const { teamSwaps } = action;
+      return {
+        ...state,
+        teamSwaps,
+      };
     case ActionType.SET_IS_LOADING:
       const { isLoading } = action;
       return {
